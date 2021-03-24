@@ -52,7 +52,7 @@ export class WeatherComponent implements OnInit {
     this.cities.valid ? this.cities.push(this.newSkill()) : this.cities.markAsTouched;
   }
 
-  getWeatherData(index: number, city?: string, units?: string) {
+  getWeatherData(index: number, city: string, units?: string) {
     this.weatherService.getWeather(city, units).subscribe(
       (res:IWeatherData) => {
         this.selectedWethearCities[index] = res as IWeatherData;
