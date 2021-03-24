@@ -11,13 +11,14 @@ import { UnitsType } from 'src/app/models/units.enum';
 })
 export class WeatherComponent implements OnInit {
 
+  validUnitsEnum: { [key: string]: UnitsType; } = {
+    ['standard']: UnitsType.STANDARD,
+    ['imperial']: UnitsType.IMPERIAL,
+    ['metric']: UnitsType.METRIC,
+ };
   validUnits = ['standard', 'metric', 'imperial'];
-  // validUnitsEnum = [['standard']:'UnitsType.STANDARD[[]];
-  validUnitsEnum = { ['standard']: UnitsType.STANDARD, ['imperial']: UnitsType.IMPERIAL, ['metric']: UnitsType.METRIC }
-
-  cities: any = ['Florida', 'South Dakota', 'Tennessee', 'Michigan', 'tel-aviv']
+  citiesList= ['Florida', 'South Dakota', 'Tennessee', 'Michigan', 'tel-aviv']
   selectedWethearCities = [] as IWeatherData[];
-  unitsTypeKeyEnum = UnitsType;
   unitsType = UnitsType;
   selectedUnitsDictionary = {} as { [index: number]: string };
 
@@ -29,12 +30,12 @@ export class WeatherComponent implements OnInit {
 
   constructor(private weatherService: WeatherService, private fb: FormBuilder) {
     this.cityWeatherForm = this.fb.group({
-      skills: this.fb.array([]),
+      cities: this.fb.array([]),
     });
   }
 
-  get skills(): FormArray {
-    return this.cityWeatherForm.get("skills") as FormArray;
+  get cities(): FormArray {
+    return this.cityWeatherForm.get("cities") as FormArray;
   }
 
   newSkill(): FormGroup {
@@ -45,10 +46,10 @@ export class WeatherComponent implements OnInit {
   }
 
   addCity() {
-    if (!this.skills.valid) {
+    if (!this.cities.valid) {
       return;
     }
-    this.skills.valid ? this.skills.push(this.newSkill()) : this.skills.markAsTouched;
+    this.cities.valid ? this.cities.push(this.newSkill()) : this.cities.markAsTouched;
   }
 
   getWeatherData(index: number, city?: string, units?: string) {
@@ -60,10 +61,10 @@ export class WeatherComponent implements OnInit {
   }
 
   textChangeHandler(index: number) {
-    if (!this.skills.controls[index].valid)
+    if (!this.cities.controls[index].valid)
       return;
-    const city = this.skills.controls[index].value['cityName'];
-    const units = this.skills.controls[index].value['units'];
+    const city = this.cities.controls[index].value['cityName'];
+    const units = this.cities.controls[index].value['units'];
     if (units && this.validUnits.includes(units))
       this.selectedUnitsDictionary[index] = units;
     else
