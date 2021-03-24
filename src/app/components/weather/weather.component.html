@@ -1,0 +1,56 @@
+<div class="container">
+        <span class="title">Weather Check</span>
+        <form [formGroup]="cityWeatherForm">
+                <div formArrayName="skills">
+                        <div *ngFor="let skill of skills.controls; let i=index">
+                                <div [formGroupName]="i">
+                                        <div class="wrapper">
+                                                <div class="inputs-wrapper">
+                                                        <select class="input" formControlName="cityName"
+                                                                (change)="textChangeHandler(i)">
+                                                                <option value="" disabled>Choose your city</option>
+                                                                <option *ngFor="let city of cities" [ngValue]="city">
+                                                                        {{city}}</option>
+                                                                <!-- <div *ngIf="skill.cityName.touched && skill.cityName.invalid" class="text-danger"></div> -->
+                                                        </select>
+                                                        <!-- <input type="text" formControlName="city"
+                                                                (change)="textChangeHandler(i)"
+                                                                placeholder="Select City"> -->
+                                                        <input class="input" type="text" formControlName="units"
+                                                                (keyup.enter)="textChangeHandler(i)"
+                                                                (change)="textChangeHandler(i)"
+                                                                placeholder="units(standart,imperial, etc.)">
+                                                        <img (click)="addCity()" class="plus-icon"
+                                                                src='../../../assets//plusIcon.png'>
+                                                </div>
+                                                <div *ngIf="selectedWethearCities.length-1 >= i" class="result-wrapper">
+                                                        <span> {{selectedWethearCities[i].name}}</span>
+                                                        <span *ngIf="selectedWethearCities[i].main.temp>0">+</span>
+                                                        <span *ngIf="selectedWethearCities[i].main.temp<0">-</span>
+                                                        <span> {{selectedWethearCities[i].main.temp}} </span>
+                                                        <!-- <span> {{validUnitsEnum[selectedUnitsDictionary[i]]}}; </span> -->
+                                                        <img
+                                                                src="https://openweathermap.org/img/w/{{selectedWethearCities[i].weather[0].icon}}.png">
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        </form>
+
+        <div class="cities-list-title">
+                <span>weather in:</span>
+        </div>
+
+        <div *ngIf="selectedWethearCities.length">
+                <div *ngFor="let city of selectedWethearCities; let i=index">
+                        <span>{{i+1}}.</span>
+                        <span> {{city.name}} </span>
+                        <span *ngIf="city.main.temp>0">+</span>
+                        <span *ngIf="city.main.temp<0">-</span>
+                        <span> {{city.main.temp}} </span>
+                        <!-- <span> {{validUnitsEnum[selectedUnitsDictionary[i]]}}; </span> -->
+                        <span> {{city.weather[0].description}} </span>
+                </div>
+        </div>
+</div>
